@@ -1,0 +1,84 @@
+
+	Thoughtfully App Server
+	"A place to store your thoughts on the cloud."
+
+	James Lawrence Turner,
+	Last Edit: Aug 23, 2011
+
+
+
+	API Documentation:
+	
+	Methods*:
+		login
+		signup
+		thoughts
+		thought
+		add
+		remove
+	
+	*all methods use HTTP POST requests
+	
+	Login:
+		action:
+			/login
+		fields:
+			username
+			password
+		description:
+			Validates a username/password pair. Returns result:true/false,
+			and an error message, if false.
+			
+	Signup:
+		action:
+			/signup
+		fields:
+			username
+			password
+			email
+		description:
+			Creates a new user. Password verification should be done client
+			side. Email can be used for password recovery.
+			
+	Thoughts:
+		action:
+			/thoughts
+		fields:
+			username
+			password
+		description:
+			Returns an array of thought ids for the given user. Credentials
+			needed to keep all thoughts private.
+			
+	Thought:
+		action:
+			/thought
+		fields:
+			username
+			password
+			id
+		description:
+			Gets the details for the provided thought id. User id must validate
+			and match the thought id to disallow outside access to thoughts
+			
+	Add:
+		action:
+			/add
+		fields:
+			username
+			password
+			text
+			latitude
+			longitude
+		description:
+			Creates a new thought entry for the user. Auto timestamped by the db.
+			
+	Remove:
+		action:
+			/remove
+		fields:
+			username
+			password
+			id
+		description:
+			Deletes the thought at the provided thought id.
