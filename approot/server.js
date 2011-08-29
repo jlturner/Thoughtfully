@@ -91,7 +91,7 @@ console.log("!");
 var express = require("express");
 var mysql = mysql = require('mysql');
 
-/*
+
 // mysql vars
 var mysqlUser = 'root';
 var mysqlPassword = 'FK7cMz3gXp0loE2xJX2R';
@@ -107,7 +107,7 @@ var photosTable = 'thoughts';
 var sqlClient = mysql.createClient({user:mysqlUser,
 password:mysqlPassword, port:mysqlPort, host:mysqlHost});
 sqlClient.query('USE ' + mysqlDatabase);
-*/
+
 
 console.log("?");
 // setup express app
