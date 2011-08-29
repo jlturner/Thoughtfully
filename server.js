@@ -84,6 +84,9 @@
 			Deletes the thought at the provided thought id.
 */
 
+
+console.log("!");
+
 // required packages
 var express = require("express");
 var mysql = mysql = require('mysql');
