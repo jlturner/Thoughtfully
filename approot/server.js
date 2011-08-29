@@ -124,11 +124,8 @@ app.configure(function(){
 
 // API Methods
 app.post("/login", function(req, res){
-	console.log(req.body);
 	var username = req.body.username;
 	var password = req.body.password;
-	console.log(username);
-	console.log(password);
 	
 	sqlClient.query('SELECT * FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
@@ -139,7 +136,6 @@ app.post("/login", function(req, res){
         }
 		else
 		{
-			console.log(results.length);
 			if(results.length == 0)
 			{
 				res.writeHead(200, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
@@ -168,9 +164,9 @@ app.post("/login", function(req, res){
 
 app.post("/signup", function(req, res){
 	
-	var username = req.param("username");
-	var password = req.param("password");
-	var email = req.param("email");
+	var username = req.body.username;
+	var password = req.body.password;
+	var email = req.body.email;
 	
 	sqlClient.query('SELECT username FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
@@ -217,8 +213,8 @@ app.post("/signup", function(req, res){
 });
 
 app.post("/thoughts", function(req, res){
-	var username = req.param("username");
-	var password = req.param("password");
+	var username = req.body.username;
+	var password = req.body.password;
 	
 	sqlClient.query('SELECT id, username, password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
@@ -271,9 +267,9 @@ app.post("/thoughts", function(req, res){
 });
 
 app.post("/thought", function(req, res){
-	var username = req.param("username");
-	var password = req.param("password");
-	var id = req.param("id");
+	var username = req.body.username;
+	var password = req.body.password;
+	var id = req.body.id;
 	
 	sqlClient.query('SELECT password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
@@ -327,12 +323,12 @@ app.post("/thought", function(req, res){
 });
 
 app.post("/add", function(req, res){
-	var text = req.param("text");
-	var latitude = req.param("latitude");
-	var longitude = req.param("longitude");
+	var text = req.body.text;
+	var latitude = req.body.latitude;
+	var longitude = req.body.longitude;
 	
-	var username = req.param("username");
-	var password = req.param("password");
+	var username = req.body.username;
+	var password = req.body.password;
 	
 	sqlClient.query('SELECT id password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
@@ -392,9 +388,9 @@ app.post("/add", function(req, res){
 });
 
 app.post("/remove", function(req, res){
-	var id = req.param("id");
-	var username = req.param("username");
-	var password = req.param("password");
+	var id = req.body.id;
+	var username = req.body.username;
+	var password = req.body.password;
 	
 	sqlClient.query('SELECT id password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
