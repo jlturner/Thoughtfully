@@ -163,7 +163,7 @@ app.post("/login", function(req, res){
 	});
 	
 });
-/*
+
 app.post("/signup", function(req, res){
 	
 	var username = req.param("username");
@@ -208,10 +208,10 @@ app.post("/signup", function(req, res){
 						res.write('{"action":"signup","result":"true"}');
 						res.end();
 					}
-				}
+				});
 			}
 		}
-	}
+	});
 });
 
 app.post("/thoughts", function(req, res){
@@ -261,11 +261,11 @@ app.post("/thoughts", function(req, res){
 							res.write('{"action":"thoughts","result":"true","thoughts":' + JSON.stringify(thoughts)+'}');
 							res.end();
 						}
-					}
+					});
 				}
 			}
 		}
-	}
+	});
 });
 
 app.post("/thought", function(req, res){
@@ -317,11 +317,11 @@ app.post("/thought", function(req, res){
 							res.write('{"action":"thought","result":"true","thought":' + JSON.stringify(thought)+'}');
 							res.end();
 						}
-					}
+					});
 				}
 			}
 		}
-	}
+	});
 });
 
 app.post("/add", function(req, res){
@@ -386,7 +386,7 @@ app.post("/add", function(req, res){
 				}
 			}
 		}
-	}
+	});
 });
 
 app.post("/remove", function(req, res){
@@ -432,12 +432,12 @@ app.post("/remove", function(req, res){
 							res.write('{"action":"remove","result":"true"}');
 							res.end();
 						}
-					}
+					});
 				}
 			}
 		}
-	}
-});*/
+	});
+});
 
 // startup the server
 app.listen(port);
