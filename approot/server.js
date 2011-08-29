@@ -129,7 +129,7 @@ app.post("/login", function(req, res){
 	var password = req.param("password");
 	
 	
-	sqlClient.query('SELECT username, password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
+	sqlClient.query('SELECT * FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
         if (err)
         {
