@@ -114,13 +114,14 @@ console.log("?");
 var port = 8080;
 var app = express.createServer();
 
-/*
+
 
 app.configure(function(){
 	app.use(express.bodyParser());
 });
 app.use(express.staticProvider(__dirname + '/public')); 
 
+/*
 // API Methods
 app.post("/login", function(req, res){
 	var username = req.param("username");
