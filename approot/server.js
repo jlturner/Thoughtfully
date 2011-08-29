@@ -179,7 +179,7 @@ app.post("/signup", function(req, res){
         }
 		else
 		{
-			if(results.length == 0)
+			if(results.length != 0)
 			{
 				res.writeHead(200, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 				res.write('{"action":"signup","result":"false","error":"Username already taken."}');
