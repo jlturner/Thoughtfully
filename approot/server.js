@@ -91,6 +91,7 @@ console.log("!");
 var express = require("express");
 var mysql = mysql = require('mysql');
 
+/*
 // mysql vars
 var mysqlUser = 'root';
 var mysqlPassword = 'FK7cMz3gXp0loE2xJX2R';
@@ -106,12 +107,15 @@ var photosTable = 'thoughts';
 var sqlClient = mysql.createClient({user:mysqlUser,
 password:mysqlPassword, port:mysqlPort, host:mysqlHost});
 sqlClient.query('USE ' + mysqlDatabase);
-
+*/
 
 console.log("?");
 // setup express app
 var port = 8080;
 var app = express.createServer();
+
+/*
+
 app.configure(function(){
 	app.use(express.bodyParser());
 });
@@ -429,7 +433,7 @@ app.post("/remove", function(req, res){
 			}
 		}
 	}
-});
+});*/
 
 // startup the server
 app.listen(port);
