@@ -125,8 +125,8 @@ app.configure(function(){
 // API Methods
 app.post("/login", function(req, res){
 	console.log(req.body);
-	var username = req.username;
-	var password = req.password;
+	var username = req.body.username;
+	var password = req.body.password;
 	console.log(username);
 	console.log(password);
 	
