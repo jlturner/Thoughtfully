@@ -89,10 +89,10 @@ var express = require("express");
 var mysql = mysql = require('mysql');
 
 // mysql vars
-var mysqlUser = 'user';
-var mysqlPassword = 'password';
-var mysqlHost = 'xxxxxx.dotcloud.com';
-var mysqlPort = 'xxxxx';
+var mysqlUser = 'root';
+var mysqlPassword = 'FK7cMz3gXp0loE2xJX2R';
+var mysqlHost = 'thoughtfully-think.dotcloud.com';
+var mysqlPort = '13877';
 var mysqlDatabase = 'thoughtbank';
 
 //  db tables
@@ -104,8 +104,10 @@ var sqlClient = mysql.createClient({user:mysqlUser,
 password:mysqlPassword, port:mysqlPort, host:mysqlHost});
 sqlClient.query('USE ' + mysqlDatabase);
 
+
+console.log("?");
 // setup express app
-var port = 9000;
+var port = 8080;
 var app = express.createServer();
 app.configure(function(){
 	app.use(express.bodyParser());
