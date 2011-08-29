@@ -241,7 +241,7 @@ app.post("/thoughts", function(req, res){
 				}
 				else
 				{
-					sqlClient.query('SELECT id FROM thoughts WHERE user_id = "' + results[0].id , function selectCb(err2, results2, fields2)
+					sqlClient.query('SELECT id FROM thoughts WHERE user_id = ' + results[0].id , function selectCb(err2, results2, fields2)
 				    {
 				        if (err2)
 				        {
