@@ -1,4 +1,5 @@
 www:
   type: nodejs
+  approot: approot
 db:
   type: mysql
