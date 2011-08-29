@@ -113,11 +113,11 @@ console.log("?");
 // setup express app
 var port = 8080;
 var app = express.createServer();
-
+app.use(express.bodyParser());
 
 
 app.configure(function(){
-	app.use(express.bodyParser());
+	
 	app.use(express.static(__dirname + '/public'));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
