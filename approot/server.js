@@ -125,9 +125,10 @@ app.configure(function(){
 
 // API Methods
 app.post("/login", function(req, res){
-	var username = req.body.username;
-	var password = req.body.password;
-	console.log(req.body.username);
+	console.log(req.body);
+	var username = req.username;
+	var password = req.password;
+	console.log(username);
 	console.log(password);
 	
 	sqlClient.query('SELECT * FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
