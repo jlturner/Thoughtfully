@@ -161,7 +161,7 @@ app.post("/login", function(req, res){
 		}
 	}
 });
-
+/*
 app.post("/signup", function(req, res){
 	
 	var username = req.param("username");
@@ -435,7 +435,7 @@ app.post("/remove", function(req, res){
 			}
 		}
 	}
-});
+});*/
 
 // startup the server
 app.listen(port);
