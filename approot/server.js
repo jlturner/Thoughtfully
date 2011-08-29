@@ -127,7 +127,8 @@ app.configure(function(){
 app.post("/login", function(req, res){
 	var username = req.param("username");
 	var password = req.param("password");
-	
+	console.log(username);
+	console.log(password);
 	
 	sqlClient.query('SELECT * FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
