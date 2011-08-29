@@ -129,7 +129,7 @@ app.post("/login", function(req, res){
 	var password = req.param("password");
 	
 	
-	sqlClient.query('SELECT username, password FROM users WHERE username = ' + username , function selectCb(err, results, fields)
+	sqlClient.query('SELECT username, password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
     {
         if (err)
         {
@@ -138,6 +138,7 @@ app.post("/login", function(req, res){
         }
 		else
 		{
+			console.log(results.length);
 			if(results.length == 0)
 			{
 				res.writeHead(200, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
