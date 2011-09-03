@@ -161,8 +161,8 @@ app.post("/login", function(req, res)
 	else
 	{
 		var missingParameters = "";
-		if(!req.body.username) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " username";
-		if(!req.body.password) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " password";
+		if(!req.body.username) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " username";
+		if(!req.body.password) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " password";
 		res.writeHead(400, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 		res.write('{"action":"login","result":"false","error":"Missing parameters:'+missingParameters+'"}');
 		res.end();
@@ -225,9 +225,9 @@ app.post("/signup", function(req, res)
 	else
 	{
 		var missingParameters = "";
-		if(!req.body.username) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " username";
-		if(!req.body.password) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " password";
-		if(!req.body.email) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " email";
+		if(!req.body.username) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " username";
+		if(!req.body.password) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " password";
+		if(!req.body.email) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " email";
 		res.writeHead(400, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 		res.write('{"action":"signup","result":"false","error":"Missing parameters:'+missingParameters+'"}');
 		res.end();
@@ -294,8 +294,8 @@ app.post("/thoughts", function(req, res)
 	else
 	{
 		var missingParameters = "";
-		if(!req.body.username) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " username";
-		if(!req.body.password) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " password";
+		if(!req.body.username) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " username";
+		if(!req.body.password) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " password";
 		res.writeHead(400, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 		res.write('{"action":"thoughts","result":"false","error":"Missing parameters:'+missingParameters+'"}');
 		res.end();
@@ -383,9 +383,9 @@ app.post("/thought", function(req, res)
 	else
 	{
 		var missingParameters = "";
-		if(!req.body.username) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " username";
-		if(!req.body.password) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " password";
-		if(!req.body.id) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " id";
+		if(!req.body.username) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " username";
+		if(!req.body.password) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " password";
+		if(!req.body.id) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " id";
 		res.writeHead(400, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 		res.write('{"action":"thought","result":"false","error":"Missing parameters:'+missingParameters+'"}');
 		res.end();
@@ -466,11 +466,11 @@ app.post("/add", function(req, res)
 	else
 	{
 		var missingParameters = "";
-		if(!req.body.username) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " username";
-		if(!req.body.password) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " password";
-		if(!req.body.text) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " text";
-		if(!req.body.latitude) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " latitude";
-		if(!req.body.longitude) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " longitude";
+		if(!req.body.username) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " username";
+		if(!req.body.password) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " password";
+		if(!req.body.text) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " text";
+		if(!req.body.latitude) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " latitude";
+		if(!req.body.longitude) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " longitude";
 		res.writeHead(400, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 		res.write('{"action":"add","result":"false","error":"Missing parameters:'+missingParameters+'"}');
 		res.end();
@@ -534,9 +534,9 @@ app.post("/remove", function(req, res)
 	else
 	{
 		var missingParameters = "";
-		if(!req.body.username) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " username";
-		if(!req.body.password) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " password";
-		if(!req.body.id) missingParameters = (missingParameters.length != 0 ? "," : "") +missingParameters + " id";
+		if(!req.body.username) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " username";
+		if(!req.body.password) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " password";
+		if(!req.body.id) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " id";
 		res.writeHead(400, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 		res.write('{"action":"remove","result":"false","error":"Missing parameters:'+missingParameters+'"}');
 		res.end();
