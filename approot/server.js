@@ -213,7 +213,7 @@ app.post("/signup", function(req, res)
 						}
 						else
 						{
-							res.writeHead(200, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+							res.writeHead(201, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 							res.write('{"action":"signup","result":"true"}');
 							res.end();
 						}
