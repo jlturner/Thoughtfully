@@ -3,85 +3,11 @@
 	"A place to store your thoughts on the cloud."
 
 	James Lawrence Turner,
-	Last Edit: Aug 23, 2011
+	Last Edit: Sep 3, 2011
 */
 
 /*
-	API Documentation:
-	
-	Methods*:
-		login
-		signup
-		thoughts
-		thought
-		add
-		remove
-	
-	*all methods use HTTP POST requests
-	
-	Login:
-		action:
-			/login
-		fields:
-			username
-			password
-		description:
-			Validates a username/password pair. Returns result:true/false,
-			and an error message, if false.
-			
-	Signup:
-		action:
-			/signup
-		fields:
-			username
-			password
-			email
-		description:
-			Creates a new user. Password verification should be done client
-			side. Email can be used for password recovery.
-			
-	Thoughts:
-		action:
-			/thoughts
-		fields:
-			username
-			password
-		description:
-			Returns an array of thought ids for the given user. Credentials
-			needed to keep all thoughts private.
-			
-	Thought:
-		action:
-			/thought
-		fields:
-			username
-			password
-			id
-		description:
-			Gets the details for the provided thought id. User id must validate
-			and match the thought id to disallow outside access to thoughts
-			
-	Add:
-		action:
-			/add
-		fields:
-			username
-			password
-			text
-			latitude
-			longitude
-		description:
-			Creates a new thought entry for the user. Auto timestamped by the db.
-			
-	Remove:
-		action:
-			/remove
-		fields:
-			username
-			password
-			id
-		description:
-			Deletes the thought at the provided thought id.
+	See http://thoughtfully-think.dotcloud.com/api.html for API documentation.
 */
 
 // required packages
@@ -283,6 +209,80 @@ app.post("/thoughts", function(req, res)
 								}
 								res.writeHead(200, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 								res.write('{"action":"thoughts","result":"true","thoughts":' + JSON.stringify(thoughts)+'}');
+								res.end();
+							}
+						});
+					}
+				}
+			}
+		});
+	}
+	else
+	{
+		var missingParameters = "";
+		if(!req.body.username) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " username";
+		if(!req.body.password) missingParameters = missingParameters + (missingParameters.length != 0 ? "," : "") + " password";
+		res.writeHead(400, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+		res.write('{"action":"thoughts","result":"false","error":"Missing parameters:'+missingParameters+'"}');
+		res.end();
+	}
+});
+
+app.post("/fullthoughts", function(req, res)
+{
+	if(req.body.username &&
+		req.body.password)
+	{
+		var username = req.body.username;
+		var password = req.body.password;
+	
+		sqlClient.query('SELECT id, username, password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
+	    {
+	        if (err)
+	        {
+	            console.log("MySQL error: " + err.message);
+	            throw err;
+	        }
+			else
+			{
+				if(results.length == 0)
+				{
+					res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+					res.write('{"action":"thoughts","result":"false","error":"Username incorrect."}');
+					res.end();
+				}
+				else
+				{
+					if(results[0].password != password)
+					{
+						res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+						res.write('{"action":"thoughts","result":"false","error":"Password incorrect."}');
+						res.end();
+					}
+					else
+					{
+						sqlClient.query('SELECT * FROM thoughts WHERE user_id = ' + results[0].id , function selectCb(err2, results2, fields2)
+					    {
+					        if (err2)
+					        {
+					            console.log("MySQL error: " + err2.message);
+					            throw err2;
+					        }
+							else
+							{
+								var thoughts = [];
+								for(r in results2)
+								{
+									var thought = {};
+									thought.id = results2[r].id;
+									thought.timestamp = results2[r].timestamp;
+									thought.text = results2[r].text;
+									thought.latitude = results2[r].latitude;
+									thought.longitude = results2[r].longitude;
+									thoughts.push(thought);
+								}
+								res.writeHead(200, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+								res.write('{"action":"fullthoughts","result":"true","thoughts":' + JSON.stringify(thoughts)+'}');
 								res.end();
 							}
 						});
