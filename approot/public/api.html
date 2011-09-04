@@ -1,0 +1,445 @@
+<html>
+<head>
+	<title>Thoughtful.ly API Documentation</title>
+	<meta name="author" content="James Lawrence Turner & David Holland Lee" />
+	<meta http-equiv="last-modified" content="Sat, 03 Sep 2011 16:00:00 EST" />
+</head>
+<body>
+	<h1>Thoughtful.ly API Documentation</h1>
+	<h5>"A place to store your thoughts on the cloud."</h5>
+	
+	<h2>Introduction</h2>
+	
+	<h3>Abstract</h3>
+	<p>Thoughful.ly is a free, public, cloud-based service to privately store and retrieve thoughts. This service leverages the web to allow users to capture and view their thoughts from anywhere in the world, on any web-enabled device. What makes Thoughtful.ly unique is the inclusion of time and geolocation data to aid the user in recalling a state of mind by providing a context for the thought.</p>
+	
+	<h3>Application Programming Interface</h3>
+	<p>It is the philosophy of Thoughtful.ly to allow users and developers to create their own interfaces for our service and to allow the use of our service in third-party applications. Thus we provide an HTTP API to interface with the data stored on Thoughtful.ly. This page serves as documentation for the Thoughtful.ly API methods.</p>
+	
+	<h3>API Notes</h3>
+	<p>The aim of this API is to provide as simple of an interface as possible. As mentioned before, all API methods are accessed using simple HTTP calls. Each call returns an informative HTTP status code and a JSON object containing the response to the API call. <strong>All calls should be accessed with the HTTP POST method.</strong></p>
+	
+	<h2>API Method Documentation</h2>
+	<ul>
+		<li>
+			<h3>/login</h3>
+			<h4>Parameters</h4>
+			<ul>
+				<li>
+					<h5>username</h5>
+					<p>The username of the account to access.</p>
+				</li>
+				<li>
+					<h5>password</h5>
+					<p>The password of the account to access.</p>
+				</li>
+			</ul>
+			<h4>Description</h4>
+			<p>Authenticates a username/password pair.</p>
+			<h4>Method URL</h4>
+			<code>http://thoughtfully-think.dotcloud.com/login</code>
+			<h4>Possible Responses</h4>
+			<ul>
+				<li>
+					<h5>Login Successful</h5>
+					<h6>HTTP Status Code 200</h6>
+					<h6>Example</h6>
+					<code>{"action":"login","result":"true"}</code>
+					<h6>Description</h6>
+					<p>Authentication successful. The username/password pair is valid.</p>
+				</li>
+				<li>
+					<h5>Missing Parameters</h5>
+					<h6>HTTP Status Code 400</h6>
+					<h6>Example</h6>
+					<code>{"action":"login","result":"false","error":"Missing parameters: username, password"}</code>
+					<h6>Description</h6>
+					<p>One or more parameters are missing. The missing parameters will be listed in the error message.</p>
+				</li>
+				<li>
+					<h5>Incorrect Username</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"login","result":"false","error":"Username incorrect."}</code>
+					<h6>Description</h6>
+					<p>The username is invalid. Either the username was spelled wrong or the user doesn't exist.</p>
+				</li>
+				<li>
+					<h5>Incorrect Password</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"login","result":"false","error":"Password incorrect."}</code>
+					<h6>Description</h6>
+					<p>The password corresponding to the username is wrong.</p>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>/signup</h3>
+			<h4>Parameters</h4>
+			<ul>
+				<li>
+					<h5>username</h5>
+					<p>The desired username.</p>
+				</li>
+				<li>
+					<h5>password</h5>
+					<p>The desired password.</p>
+				</li>
+				<li>
+					<h5>email</h5>
+					<p>The user's email address.</p>
+				</li>
+			</ul>
+			<h4>Description</h4>
+			<p>Attempts to create a new user from the given username, password, and email address.</p>
+			<h4>Method URL</h4>
+			<code>http://thoughtfully-think.dotcloud.com/signup</code>
+			<h4>Possible Responses</h4>
+			<ul>
+				<li>
+					<h5>Signup Successful</h5>
+					<h6>HTTP Status Code 201</h6>
+					<h6>Example</h6>
+					<code>{"action":"signup","result":"true"}</code>
+					<h6>Description</h6>
+					<p>The new user has successfully been created.</p>
+				</li>
+				<li>
+					<h5>Missing Parameters</h5>
+					<h6>HTTP Status Code 400</h6>
+					<h6>Example</h6>
+					<code>{"action":"signup","result":"false","error":"Missing parameters: username, password, email"}</code>
+					<h6>Description</h6>
+					<p>One or more parameters are missing. The missing parameters will be listed in the error message.</p>
+				</li>
+				<li>
+					<h5>Username Taken</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"signup","result":"false","error":"Username already taken."}</code>
+					<h6>Description</h6>
+					<p>A user already exists with the desired username. A new username must be chosen.</p>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>/thoughts</h3>
+			<h4>Parameters</h4>
+			<ul>
+				<li>
+					<h5>username</h5>
+					<p>The username of the account to access.</p>
+				</li>
+				<li>
+					<h5>password</h5>
+					<p>The password of the account to access.</p>
+				</li>
+				<li>
+					<h5>limit <em>(optional, default: 'none')</em></h5>
+					<p>The maximum number of thoughts to return.</p>
+				</li>
+				<li>
+					<h5>page <em>(optional, default: 0)</em></h5>
+					<p>The password of the account to access.</p>
+				</li>
+			</ul>
+			<h4>Description</h4>
+			<p>With successful authentication, returns a list of thoughts id numbers to be used with the /thought method. Useful when data transfer optimization is desired.</p>
+			<h4>Method URL</h4>
+			<code>http://thoughtfully-think.dotcloud.com/thoughts</code>
+			<h4>Possible Responses</h4>
+			<ul>
+				<li>
+					<h5>Thoughts Returned</h5>
+					<h6>HTTP Status Code 200</h6>
+					<h6>Example</h6>
+					<code>{"action":"thoughts","result":"true","thoughts":[1,2,3]}</code>
+					<h6>Description</h6>
+					<p>Authentication successful and the thought id(s) for the user are returned in an array.</p>
+				</li>
+				<li>
+					<h5>Missing Parameters</h5>
+					<h6>HTTP Status Code 400</h6>
+					<h6>Example</h6>
+					<code>{"action":"thoughts","result":"false","error":"Missing parameters: username, password"}</code>
+					<h6>Description</h6>
+					<p>One or more parameters are missing. The missing parameters will be listed in the error message.</p>
+				</li>
+				<li>
+					<h5>Incorrect Username</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"thoughts","result":"false","error":"Username incorrect."}</code>
+					<h6>Description</h6>
+					<p>The username is invalid. Either the username was spelled wrong or the user doesn't exist.</p>
+				</li>
+				<li>
+					<h5>Incorrect Password</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"thoughts","result":"false","error":"Password incorrect."}</code>
+					<h6>Description</h6>
+					<p>The password corresponding to the username is wrong.</p>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>/fullthoughts IMPLEMENT ME!</h3>
+			<h4>Parameters</h4>
+			<ul>
+				<li>
+					<h5>username</h5>
+					<p>The username of the account to access.</p>
+				</li>
+				<li>
+					<h5>password</h5>
+					<p>The password of the account to access.</p>
+				</li>
+				<li>
+					<h5>limit <em>(optional, default: 50)</em></h5>
+					<p>The maximum number of thoughts to return.</p>
+				</li>
+				<li>
+					<h5>page <em>(optional, default: 0)</em></h5>
+					<p>The password of the account to access.</p>
+				</li>
+			</ul>
+			<h4>Description</h4>
+			<p>With successful authentication, returns a list of thoughts with all relevant data (id, text, date, latitude, longitude).</p>
+			<h4>Method URL</h4>
+			<code>http://thoughtfully-think.dotcloud.com/fullthoughts</code>
+			<h4>Possible Responses</h4>
+			<ul>
+				<li>
+					<h5>Thoughts Returned</h5>
+					<h6>HTTP Status Code 200</h6>
+					<h6>Example</h6>
+					<code>{"action":"thoughts","result":"true","thoughts":[1,2,3]} WRONG!!</code>
+					<h6>Description</h6>
+					<p>Authentication successful and the thought data for the user is returned in an array.</p>
+				</li>
+				<li>
+					<h5>Missing Parameters</h5>
+					<h6>HTTP Status Code 400</h6>
+					<h6>Example</h6>
+					<code>{"action":"fullthoughts","result":"false","error":"Missing parameters: username, password"}</code>
+					<h6>Description</h6>
+					<p>One or more parameters are missing. The missing parameters will be listed in the error message.</p>
+				</li>
+				<li>
+					<h5>Incorrect Username</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"fullthoughts","result":"false","error":"Username incorrect."}</code>
+					<h6>Description</h6>
+					<p>The username is invalid. Either the username was spelled wrong or the user doesn't exist.</p>
+				</li>
+				<li>
+					<h5>Incorrect Password</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"fullthoughts","result":"false","error":"Password incorrect."}</code>
+					<h6>Description</h6>
+					<p>The password corresponding to the username is wrong.</p>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>/thought</h3>
+			<h4>Parameters</h4>
+			<ul>
+				<li>
+					<h5>username</h5>
+					<p>The username of the account to access.</p>
+				</li>
+				<li>
+					<h5>password</h5>
+					<p>The password of the account to access.</p>
+				</li>
+				<li>
+					<h5>id</h5>
+					<p>The thought's id number.</p>
+				</li>
+			</ul>
+			<h4>Description</h4>
+			<p>With successful authentication, returns thought data associated with a thought's id number obtained from the the /thought method or the /fullthoughts.</p>
+			<h4>Method URL</h4>
+			<code>http://thoughtfully-think.dotcloud.com/thought</code>
+			<h4>Possible Responses</h4>
+			<ul>
+				<li>
+					<h5>Thought Returned</h5>
+					<h6>HTTP Status Code 200</h6>
+					<h6>Example</h6>
+					<code>{"action":"thought","result":"true","thought":{"id":1,"timestamp":"2011-08-29T19:04:14.000Z","text":"A great idea!","latitude":123,"longitude":456}}</code>
+					<h6>Description</h6>
+					<p>Authentication successful and the thought data is returned.</p>
+				</li>
+				<li>
+					<h5>Thought Not Found</h5>
+					<h6>HTTP Status Code 404</h6>
+					<h6>Example</h6>
+					<code>{"action":"thought","result":"false","error":"Thought not found."}</code>
+					<h6>Description</h6>
+					<p>The requested thought cannot be found, and therefore is unavailable.</p>
+				</li>
+				<li>
+					<h5>Not User's Thought</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"thought","result":"false","error":"Thought does not belong to user jlturner."}</code>
+					<h6>Description</h6>
+					<p>The requested thought does not belong to the authenticated user and cannot be viewed. All thoughts are private.</p>
+				</li>
+				<li>
+					<h5>Missing Parameters</h5>
+					<h6>HTTP Status Code 400</h6>
+					<h6>Example</h6>
+					<code>{"action":"thought","result":"false","error":"Missing parameters: username, password, id"}</code>
+					<h6>Description</h6>
+					<p>One or more parameters are missing. The missing parameters will be listed in the error message.</p>
+				</li>
+				<li>
+					<h5>Incorrect Username</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"thought","result":"false","error":"Username incorrect."}</code>
+					<h6>Description</h6>
+					<p>The username is invalid. Either the username was spelled wrong or the user doesn't exist.</p>
+				</li>
+				<li>
+					<h5>Incorrect Password</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"thought","result":"false","error":"Password incorrect."}</code>
+					<h6>Description</h6>
+					<p>The password corresponding to the username is wrong.</p>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>/add</h3>
+			<h4>Parameters</h4>
+			<ul>
+				<li>
+					<h5>username</h5>
+					<p>The username of the account to access.</p>
+				</li>
+				<li>
+					<h5>password</h5>
+					<p>The password of the account to access.</p>
+				</li>
+				<li>
+					<h5>text</h5>
+					<p>The thought text entered by the user.</p>
+				</li>
+				<li>
+					<h5>latitude</h5>
+					<p>The latitude associated with this thought.</p>
+				</li>
+				<li>
+					<h5>longitude</h5>
+					<p>The longitude associated with this thought.</p>
+				</li>
+			</ul>
+			<h4>Description</h4>
+			<p>With successful authentication, adds a new thought associated with this user to the database.</p>
+			<h4>Method URL</h4>
+			<code>http://thoughtfully-think.dotcloud.com/add</code>
+			<h4>Possible Responses</h4>
+			<ul>
+				<li>
+					<h5>Thought Successfully Added</h5>
+					<h6>HTTP Status Code 201</h6>
+					<h6>Example</h6>
+					<code>{"action":"add","result":"true"}</code>
+					<h6>Description</h6>
+					<p>Authentication successful and the new thought has been added to the database.</p>
+				</li>
+				<li>
+					<h5>Missing Parameters</h5>
+					<h6>HTTP Status Code 400</h6>
+					<h6>Example</h6>
+					<code>{"action":"add","result":"false","error":"Missing parameters: username, password, text, longitude, latitude"}</code>
+					<h6>Description</h6>
+					<p>One or more parameters are missing. The missing parameters will be listed in the error message.</p>
+				</li>
+				<li>
+					<h5>Incorrect Username</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"add","result":"false","error":"Username incorrect."}</code>
+					<h6>Description</h6>
+					<p>The username is invalid. Either the username was spelled wrong or the user doesn't exist.</p>
+				</li>
+				<li>
+					<h5>Incorrect Password</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"add","result":"false","error":"Password incorrect."}</code>
+					<h6>Description</h6>
+					<p>The password corresponding to the username is wrong.</p>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>/remove</h3>
+			<h4>Parameters</h4>
+			<ul>
+				<li>
+					<h5>username</h5>
+					<p>The username of the account to access.</p>
+				</li>
+				<li>
+					<h5>password</h5>
+					<p>The password of the account to access.</p>
+				</li>
+				<li>
+					<h5>id</h5>
+					<p>The thought's id number.</p>
+				</li>
+			</ul>
+			<h4>Description</h4>
+			<p>With successful authentication, deletes a thought from the database. This is a permanent action.</p>
+			<h4>Method URL</h4>
+			<code>http://thoughtfully-think.dotcloud.com/remove</code>
+			<h4>Possible Responses</h4>
+			<ul>
+				<li>
+					<h5>Thought Successfully Removed</h5>
+					<h6>HTTP Status Code 200</h6>
+					<h6>Example</h6>
+					<code>{"action":"remove","result":"true"}</code>
+					<h6>Description</h6>
+					<p>Authentication successful and the thought has been removed permanently.</p>
+				</li>
+				<li>
+					<h5>Missing Parameters</h5>
+					<h6>HTTP Status Code 400</h6>
+					<h6>Example</h6>
+					<code>{"action":"remove","result":"false","error":"Missing parameters: username, password, id"}</code>
+					<h6>Description</h6>
+					<p>One or more parameters are missing. The missing parameters will be listed in the error message.</p>
+				</li>
+				<li>
+					<h5>Incorrect Username</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"remove","result":"false","error":"Username incorrect."}</code>
+					<h6>Description</h6>
+					<p>The username is invalid. Either the username was spelled wrong or the user doesn't exist.</p>
+				</li>
+				<li>
+					<h5>Incorrect Password</h5>
+					<h6>HTTP Status Code 403</h6>
+					<h6>Example</h6>
+					<code>{"action":"remove","result":"false","error":"Password incorrect."}</code>
+					<h6>Description</h6>
+					<p>The password corresponding to the username is wrong.</p>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</body>
+</html>
