@@ -193,7 +193,7 @@ app.post("/thoughts", function(req, res)
 					}
 					else
 					{
-						sqlClient.query('SELECT id FROM thoughts WHERE user_id = ' + results[0].id , function selectCb(err2, results2, fields2)
+						sqlClient.query('SELECT id FROM thoughts WHERE user_id = ' + results[0].id + ' ORDER BY timestamp DESC', function selectCb(err2, results2, fields2)
 					    {
 					        if (err2)
 					        {
@@ -261,7 +261,7 @@ app.post("/fullthoughts", function(req, res)
 					}
 					else
 					{
-						sqlClient.query('SELECT * FROM thoughts WHERE user_id = ' + results[0].id , function selectCb(err2, results2, fields2)
+						sqlClient.query('SELECT * FROM thoughts WHERE user_id = ' + results[0].id + ' ORDER BY timestamp DESC' , function selectCb(err2, results2, fields2)
 					    {
 					        if (err2)
 					        {
@@ -275,7 +275,7 @@ app.post("/fullthoughts", function(req, res)
 								{
 									var thought = {};
 									thought.id = results2[r].id;
-									thought.timestamp = results2[r].timestamp;
+									thought.timestamp = results2[r].timestamp.valueOf();
 									thought.text = results2[r].text;
 									thought.latitude = results2[r].latitude;
 									thought.longitude = results2[r].longitude;
@@ -364,7 +364,7 @@ app.post("/thought", function(req, res)
 									{
 										var thought = {};
 										thought.id = results2[0].id;
-										thought.timestamp = results2[0].timestamp;
+										thought.timestamp = results2[0].timestamp.valueOf();
 										thought.text = results2[0].text;
 										thought.latitude = results2[0].latitude;
 										thought.longitude = results2[0].longitude;
