@@ -228,7 +228,7 @@ app.post("/thoughts", function(req, res)
 		}
 		
 		var page = (req.body.page ? req.body.page : defaultPage);
-		if(isNaN(parseInt(page))
+		if(isNaN(parseInt(page)) == true)
 		{
 			page = defaultPage;
 			warningString = warningString + (warningString.length == 0 ? "" : " ") + "page parameter not a number, default value 0 used.";
