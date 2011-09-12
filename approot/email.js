@@ -1,7 +1,7 @@
 // Adapted from http://en.wikibooks.org/wiki/JavaScript/Best_Practices
 // 'cause its proper RFC2822 validation. -james
 
-exports.validate(str) {
+exports.validate = function(str) {
   // These comments use the following terms from RFC2822:
   // local-part, domain, domain-literal and dot-atom.
   // Does the address contain a local-part followed an @ followed by a domain?
