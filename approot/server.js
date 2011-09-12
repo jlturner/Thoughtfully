@@ -14,6 +14,10 @@
 var express = require("express");
 var mysql = mysql = require('mysql');
 
+// validation defaults
+var minUsernamePasswordLength = 6;
+var maxUsernamePasswordLength = 25;
+
 // mysql vars
 var mysqlUser = 'root';
 var mysqlPassword = 'FK7cMz3gXp0loE2xJX2R';
@@ -104,49 +108,82 @@ app.post("/signup", function(req, res)
 		var username = req.body.username;
 		var password = req.body.password;
 		var email = req.body.email;
-	
-		sqlClient.query('SELECT username FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
-	    {
-	        if (err)
-	        {
-	            console.log("MySQL error: " + err.message);
-	            throw err;
-	        }
-			else
-			{
-				if(results.length != 0)
-				{
-					res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
-					res.write('{"action":"signup","result":"false","error":"Username already taken."}');
-					res.end();
-				}
+		
+		if(username.length < minUsernamePasswordLength)
+		{
+			res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+			res.write('{"action":"signup","result":"false","error":"Username must be at least ' + minUsernamePasswordLength + ' characters long."}');
+			res.end();
+		}
+		else if(username.length > maxUsernamePasswordLength)
+		{
+			res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+			res.write('{"action":"signup","result":"false","error":"Username must be at most ' + maxUsernamePasswordLength + ' characters long."}');
+			res.end();
+		}
+		else if(password.length < minUsernamePasswordLength)
+		{
+			res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+			res.write('{"action":"signup","result":"false","error":"Password must be at least ' + minUsernamePasswordLength + ' characters long."}');
+			res.end();
+		}
+		else if(password.length > maxUsernamePasswordLength)
+		{
+			res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+			res.write('{"action":"signup","result":"false","error":"Password must be at most ' + maxUsernamePasswordLength + ' characters long."}');
+			res.end();
+		}
+		else if (email.match( [a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?) == false)
+		{
+			res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+			res.write('{"action":"signup","result":"false","error":"Invalid email address."}');
+			res.end();
+		}
+		else
+		{
+			sqlClient.query('SELECT username FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
+		    {
+		        if (err)
+		        {
+		            console.log("MySQL error: " + err.message);
+		            throw err;
+		        }
 				else
 				{
-					sqlClient.query(
-					        'INSERT INTO '+ 'users' +
-					        ' SET username = ?'+
-					        ', password = ?'+
-					        ', email = ?',
-					        [username,
-					         password,
-					         email],
-					function selectCb(err2, results2, fields2)
+					if(results.length != 0)
 					{
-						if(err2)
+						res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+						res.write('{"action":"signup","result":"false","error":"Username already taken."}');
+						res.end();
+					}
+					else
+					{
+						sqlClient.query(
+						        'INSERT INTO '+ 'users' +
+						        ' SET username = ?'+
+						        ', password = ?'+
+						        ', email = ?',
+						        [username,
+						         password,
+						         email],
+						function selectCb(err2, results2, fields2)
 						{
-							console.log("MySQL error: " + err2.message);
-				            throw err2;
-						}
-						else
-						{
-							res.writeHead(201, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
-							res.write('{"action":"signup","result":"true"}');
-							res.end();
-						}
-					});
+							if(err2)
+							{
+								console.log("MySQL error: " + err2.message);
+					            throw err2;
+							}
+							else
+							{
+								res.writeHead(201, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+								res.write('{"action":"signup","result":"true"}');
+								res.end();
+							}
+						});
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 	else
 	{
@@ -160,6 +197,11 @@ app.post("/signup", function(req, res)
 	}
 });
 
+var defaultReturnType = 'full';
+var defaultNumberOfThoughts = 'all';
+var defaultPage = 0;
+var defaultOrder = 'descending';
+
 app.post("/thoughts", function(req, res)
 {
 	if(req.body.username &&
@@ -167,7 +209,39 @@ app.post("/thoughts", function(req, res)
 	{
 		var username = req.body.username;
 		var password = req.body.password;
+		
+		// Optional parameters
+		var warningString = ""; // If optional parameters are malformed, add to this string which will be passed back.
+		
+		var returnType = (req.body.return ? req.body.return : defaultReturnType);
+		if(returnType != 'full' || returnType != 'id')
+		{
+			returnType = defaultReturnType;
+			warningString = warningString + (warningString.length == 0 ? "" : " ") + "return parameter does not equal 'full' or 'id', default value 'full' used.";
+		}
+		
+		var numberOfThoughts = (req.body.numberOfThoughts ? req.body.numberOfThoughts : defaultNumberOfThoughts);
+		if(numberOfThoughts != 'all' && isNaN(parseInt(numberOfThoughts)))
+		{
+			numberOfThoughts = defaultNumberOfThoughts;
+			warningString = warningString + (warningString.length == 0 ? "" : " ") + "numberOfThoughts parameter neither a number nor 'all', default value 'all' used.";
+		}
+		
+		var page = (req.body.page ? req.body.page : defaultPage);
+		if(isNaN(parseInt(page))
+		{
+			page = defaultPage;
+			warningString = warningString + (warningString.length == 0 ? "" : " ") + "page parameter not a number, default value 0 used.";
+		}
+		
+		var order = (req.body.order ? req.body.order : defaultOrder);
+		if(order != 'ascending' || order != 'descending')
+		{
+			order = defaultOrder;
+			warningString = warningString + (warningString.length == 0 ? "" : " ") + "order parameter does not equal 'ascending' or 'descending', default value 'descending' used.";
+		}
 	
+		// Begin query
 		sqlClient.query('SELECT id, username, password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
 	    {
 	        if (err)
@@ -193,7 +267,7 @@ app.post("/thoughts", function(req, res)
 					}
 					else
 					{
-						sqlClient.query('SELECT id FROM thoughts WHERE user_id = ' + results[0].id + ' ORDER BY timestamp DESC', function selectCb(err2, results2, fields2)
+						sqlClient.query('SELECT ' + (returnType == 'full' ? '*' : 'id') + ' FROM thoughts WHERE user_id = ' + results[0].id + ' ORDER BY timestamp' + (order == 'ascending' ? 'ASC' : 'DESC') + (numberOfThoughts == 'all'?'':(' LIMIT ' + numberOfThoughts + ' OFFSET ' + (page * numberOfThoughts))), function selectCb(err2, results2, fields2)
 					    {
 					        if (err2)
 					        {
@@ -205,10 +279,23 @@ app.post("/thoughts", function(req, res)
 								var thoughts = [];
 								for(r in results2)
 								{
-									thoughts.push(results2[r].id);
+									if(returnType == 'full')
+									{
+										var thought = {};
+										thought.id = results2[r].id;
+										thought.timestamp = results2[r].timestamp.valueOf();
+										thought.text = results2[r].text;
+										thought.latitude = results2[r].latitude;
+										thought.longitude = results2[r].longitude;
+										thoughts.push(thought);
+									}
+									else
+									{
+										thoughts.push(results2[r].id);
+									}
 								}
 								res.writeHead(200, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
-								res.write('{"action":"thoughts","result":"true","thoughts":' + JSON.stringify(thoughts)+'}');
+								res.write('{"action":"thoughts","result":"true","thoughts":' + JSON.stringify(thoughts) + (warningString.length != 0 ? ', "warning":' + warningString : '') +'}');
 								res.end();
 							}
 						});
@@ -406,6 +493,16 @@ app.post("/add", function(req, res)
 	
 		var username = req.body.username;
 		var password = req.body.password;
+		
+		// Optional parameters
+		var warningString = ""; // If optional parameters are malformed, add to this string which will be passed back.
+		
+		var returnType = (req.body.return ? req.body.return : defaultReturnType);
+		if(returnType != 'full' || returnType != 'id')
+		{
+			returnType = defaultReturnType;
+			warningString = warningString + (warningString.length == 0 ? "" : " ") + "return parameter does not equal 'full' or 'id', default value 'full' used.";
+		}
 	
 		sqlClient.query('SELECT id, password FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
 	    {
@@ -453,7 +550,7 @@ app.post("/add", function(req, res)
 								else
 								{
 									res.writeHead(201, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
-									res.write('{"action":"add","result":"true"}');
+									res.write('{"action":"add","result":"true","thought":'+ results2.insertId + (warningString.length != 0 ? ', "warning":' + warningString : '') +'}');
 									res.end();
 								}
 							});
