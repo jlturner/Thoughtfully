@@ -267,7 +267,7 @@ app.post("/thoughts", function(req, res)
 					}
 					else
 					{
-						sqlClient.query('SELECT ' + (returnType == 'full' ? '*' : 'id') + ' FROM thoughts WHERE user_id = ' + results[0].id + ' ORDER BY timestamp' + (order == 'ascending' ? 'ASC' : 'DESC') + (numberOfThoughts == 'all'?'':(' LIMIT ' + numberOfThoughts + ' OFFSET ' + (page * numberOfThoughts))), function selectCb(err2, results2, fields2)
+						sqlClient.query('SELECT ' + (returnType == 'full' ? '*' : 'id') + ' FROM thoughts WHERE user_id = ' + results[0].id + ' ORDER BY timestamp ' + (order == 'ascending' ? 'ASC' : 'DESC') + (numberOfThoughts == 'all'?'':(' LIMIT ' + numberOfThoughts + ' OFFSET ' + (page * numberOfThoughts))), function selectCb(err2, results2, fields2)
 					    {
 					        if (err2)
 					        {
