@@ -295,7 +295,7 @@ app.post("/thoughts", function(req, res)
 									}
 								}
 								res.writeHead(200, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
-								res.write('{"action":"thoughts","result":"true","thoughts":' + JSON.stringify(thoughts) + (warningString.length != 0 ? ', "warning":"' + warningString : '"') +'}');
+								res.write('{"action":"thoughts","result":"true","thoughts":' + JSON.stringify(thoughts) + (warningString.length != 0 ? ', "warning":"' + warningString + '"' : '') +'}');
 								res.end();
 							}
 						});
@@ -550,7 +550,7 @@ app.post("/add", function(req, res)
 								else
 								{
 									res.writeHead(201, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
-									res.write('{"action":"add","result":"true","thought":'+ results2.insertId + (warningString.length != 0 ? ', "warning":"' + warningString : '"') +'}');
+									res.write('{"action":"add","result":"true","thought":'+ results2.insertId + (warningString.length != 0 ? ', "warning":"' + warningString + '"' : '') +'}');
 									res.end();
 								}
 							});
