@@ -132,13 +132,13 @@ app.post("/signup", function(req, res)
 			res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 			res.write('{"action":"signup","result":"false","error":"Password must be at most ' + maxUsernamePasswordLength + ' characters long."}');
 			res.end();
-		}
+		}/*
 		else if (email.match( [a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?) == false)
 		{
 			res.writeHead(403, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
 			res.write('{"action":"signup","result":"false","error":"Invalid email address."}');
 			res.end();
-		}
+		}*/
 		else
 		{
 			sqlClient.query('SELECT username FROM users WHERE username = "' + username + '"' , function selectCb(err, results, fields)
