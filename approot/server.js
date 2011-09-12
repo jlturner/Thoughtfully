@@ -498,7 +498,7 @@ app.post("/add", function(req, res)
 		var warningString = ""; // If optional parameters are malformed, add to this string which will be passed back.
 		
 		var returnType = (req.body.return ? req.body.return : defaultReturnType);
-		if(returnType != 'full' || returnType != 'id')
+		if(returnType != 'full' && returnType != 'id')
 		{
 			returnType = defaultReturnType;
 			warningString = warningString + (warningString.length == 0 ? "" : " ") + "return parameter does not equal 'full' or 'id', default value 'full' used.";
@@ -549,9 +549,36 @@ app.post("/add", function(req, res)
 						        }
 								else
 								{
-									res.writeHead(201, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
-									res.write('{"action":"add","result":"true","thought":'+ results2.insertId + (warningString.length != 0 ? ', "warning":"' + warningString + '"' : '') +'}');
-									res.end();
+									if(returnType == 'full')
+									{
+										sqlClient.query('SELECT * FROM thoughts WHERE id = '+ id , function selectCb(err3, results3, fields3)
+									    {
+									        if (err3)
+									        {
+									            console.log("MySQL error: " + err3.message);
+									            throw err3;
+									        }
+											else
+											{
+												var thought = {};
+												thought.id = results3[0].id;
+												thought.timestamp = results3[0].timestamp.valueOf();
+												thought.text = results3[0].text;
+												thought.latitude = results3[0].latitude;
+												thought.longitude = results3[0].longitude;
+												
+												res.writeHead(201, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+												res.write('{"action":"add","result":"true","thought":'+ JSON.stringify(thought) + (warningString.length != 0 ? ', "warning":"' + warningString + '"' : '') +'}');
+												res.end();
+											}
+										});
+									}
+									else
+									{
+										res.writeHead(201, {"Content-Type": "application/json",'Access-Control-Allow-Origin' : '*'});
+										res.write('{"action":"add","result":"true","thought":'+ results2.insertId + (warningString.length != 0 ? ', "warning":"' + warningString + '"' : '') +'}');
+										res.end();
+									}
 								}
 							});
 
