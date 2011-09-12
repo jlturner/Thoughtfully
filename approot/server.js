@@ -214,7 +214,7 @@ app.post("/thoughts", function(req, res)
 		var warningString = ""; // If optional parameters are malformed, add to this string which will be passed back.
 		console.log(req.body.return);
 		var returnType = (req.body.return ? req.body.return : defaultReturnType);
-		if(returnType != 'full' || returnType != 'id')
+		if(returnType != 'full' && returnType != 'id')
 		{
 			returnType = defaultReturnType;
 			warningString = warningString + (warningString.length == 0 ? "" : " ") + "return parameter does not equal 'full' or 'id', default value 'full' used.";
@@ -238,7 +238,7 @@ app.post("/thoughts", function(req, res)
 		
 		console.log(req.body.order);
 		var order = (req.body.order ? req.body.order : defaultOrder);
-		if(order != 'ascending' || order != 'descending')
+		if(order != 'ascending' && order != 'descending')
 		{
 			order = defaultOrder;
 			warningString = warningString + (warningString.length == 0 ? "" : " ") + "order parameter does not equal 'ascending' or 'descending', default value 'descending' used.";
