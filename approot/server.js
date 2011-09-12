@@ -212,7 +212,7 @@ app.post("/thoughts", function(req, res)
 		
 		// Optional parameters
 		var warningString = ""; // If optional parameters are malformed, add to this string which will be passed back.
-		
+		console.log(req.body.return);
 		var returnType = (req.body.return ? req.body.return : defaultReturnType);
 		if(returnType != 'full' || returnType != 'id')
 		{
@@ -220,6 +220,7 @@ app.post("/thoughts", function(req, res)
 			warningString = warningString + (warningString.length == 0 ? "" : " ") + "return parameter does not equal 'full' or 'id', default value 'full' used.";
 		}
 		
+		console.log(req.body.numberOfThoughts);
 		var numberOfThoughts = (req.body.numberOfThoughts ? req.body.numberOfThoughts : defaultNumberOfThoughts);
 		if(numberOfThoughts != 'all' && isNaN(parseInt(numberOfThoughts)))
 		{
@@ -227,6 +228,7 @@ app.post("/thoughts", function(req, res)
 			warningString = warningString + (warningString.length == 0 ? "" : " ") + "numberOfThoughts parameter neither a number nor 'all', default value 'all' used.";
 		}
 		
+		console.log(req.body.page);
 		var page = (req.body.page ? req.body.page : defaultPage);
 		if(isNaN(parseInt(page)) == true)
 		{
@@ -234,6 +236,7 @@ app.post("/thoughts", function(req, res)
 			warningString = warningString + (warningString.length == 0 ? "" : " ") + "page parameter not a number, default value 0 used.";
 		}
 		
+		console.log(req.body.order);
 		var order = (req.body.order ? req.body.order : defaultOrder);
 		if(order != 'ascending' || order != 'descending')
 		{
