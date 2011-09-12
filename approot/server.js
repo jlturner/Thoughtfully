@@ -551,7 +551,7 @@ app.post("/add", function(req, res)
 								{
 									if(returnType == 'full')
 									{
-										sqlClient.query('SELECT * FROM thoughts WHERE id = '+ id , function selectCb(err3, results3, fields3)
+										sqlClient.query('SELECT * FROM thoughts WHERE id = '+ results2.id , function selectCb(err3, results3, fields3)
 									    {
 									        if (err3)
 									        {
